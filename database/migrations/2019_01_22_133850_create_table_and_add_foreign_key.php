@@ -23,8 +23,8 @@ class CreateTableAndAddForeignKey extends Migration
             });
        }
        
-        if(!Schema::hasTable('Customers')){
-            Schema::create('Customers', function (Blueprint $table) {
+        if(!Schema::hasTable('Customer')){
+            Schema::create('Customer', function (Blueprint $table) {
                 $table->increments('id')->unique();
                 $table->string('contract_id');
                 $table->string('voucher_id');
