@@ -2,10 +2,16 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
+use Laravel\Passport\HasApiTokens;
+// use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 
-class User extends Model
+class User extends Authenticatable
 {
-    protected $id = ['user_id'];
-    protected $password = ['password'];
+
+    use HasApiTokens, Notifiable;
+
+    // protected $id = ['user_id'];
+    // protected $password = ['password'];
 }
