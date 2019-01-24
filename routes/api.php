@@ -22,4 +22,10 @@ Route::get('user/{name?}', function ($name = null) {
     return $name;
 });
 
-Route::post('register','Auth/RegisterController@create');
+Route::post('login', 'API\PassportController@login');
+
+Route::post('register', 'API\PassportController@register');
+
+Route::group(['middleware' => 'auth:api'], function(){
+	Route::post('get-details', 'API\PassportController@getDetails');
+});

@@ -175,6 +175,11 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
+         /*
+         * Passport config
+         */
+        // Config Passport
+        Laravel\Passport\PassportServiceProvider::class
     ],
 
     /*
