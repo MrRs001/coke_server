@@ -27,7 +27,7 @@ class CreateTableAndAddForeignKey extends Migration
             Schema::create('Customer', function (Blueprint $table) {
                 $table->increments('id')->unique();
                 $table->string('contract_id');
-                $table->string('voucher_id');
+                $table->string('sales');
                 $table->string('user_id');
                 $table->string('image');
                 $table->timestamps();
@@ -52,6 +52,7 @@ class CreateTableAndAddForeignKey extends Migration
                 $table->timestamps();
             });
         }
+
     }
 
     /**

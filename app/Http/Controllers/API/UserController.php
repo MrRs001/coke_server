@@ -1,5 +1,5 @@
 <?php
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\API;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -22,9 +22,10 @@ class UserController extends Controller{
         if ($u = User::where('user_id', '=', $request->user_id)->first())
         {
             return response()->json([
+                'type' => 'SIGNUP',
                 'status' => 'ERROR',
                 'message' => 'User existed!'
-            ], 201);
+            ], 400);
         } 
 
         $request->validate([
@@ -40,6 +41,7 @@ class UserController extends Controller{
         $user->save();
 
         return response()->json([
+            'type' => 'SIGNUP',
             'status' => 'SUCCESS',
             'message' => 'Successfully created user!'
         ], 201);
@@ -65,15 +67,17 @@ class UserController extends Controller{
                 'message' => 'Unauthorized'
             ], 401);
 
-        $user = $request->User();
+        $user = $request->user();
 
         $tokenResult = $user->createToken('Personal Access Token');
-
+        
         $token = $tokenResult->token;
         if ($request->remember_me)
             $token->expires_at = Carbon::now()->addWeeks(1);
         $token->save();
         return response()->json([
+            'type' => 'LOGIN',
+            'status' => 'SUCCESS',
             'access_token' => $tokenResult->accessToken,
             'token_type' => 'Bearer',
             'expires_at' => Carbon::parse(
@@ -100,9 +104,12 @@ class UserController extends Controller{
      *
      * @return [json] user object
      */
-    public function User(Request $request)
+    public function user(Request $request)
     {
-        return response()->json($request->User());
+        return response()->json($request->user());
     }
  
+
+     
+
 }

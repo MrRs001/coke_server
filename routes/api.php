@@ -29,13 +29,16 @@ Route::get('user/{name?}', function ($name = null) {
 Route::group([
     'prefix' => 'auth'
 ], function () {
-    Route::post('login', 'UserController@login');
-    Route::post('signup', 'UserController@signup');
-  
+    Route::post('login', 'API\UserController@login');
+    Route::post('signup', 'API\UserController@signup');
+
+    Route::post('retailer', 'API\RetailerController@retailer');
+
     Route::group([
       'middleware' => 'auth:api'
     ], function() {
-        Route::get('logout', 'UserController@logout');
-        Route::get('user', 'UserController@user');
+        Route::get('logout', 'API\UserController@logout');
+        Route::get('user', 'API\UserController@user');
+        Route::get('requestgift', 'API\GiftController@requestgift');
     });
 });
