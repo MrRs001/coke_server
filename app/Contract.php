@@ -12,6 +12,8 @@ class Contract extends Model
         'contract_id',
         'distribute_code',
         'sales',
+        'image',
+        'hash_image',
         'gift_id',
         'gift_type',
         'u_name',

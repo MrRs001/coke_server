@@ -8,6 +8,18 @@ include 'MyConstant.php';
 
 class GiftController extends Controller{
 
+    /** 
+     * Function to get list gift
+     * 
+    */
+    public function getListGift(Request $request){
+        return response()->json([
+            'type' => 'GIFT',
+            'status' => 'SUCCESS',
+            'message' => 'Get list gift!',
+            'list' => Gift::all()
+        ]);
+    }
 
     public function insertNewGift(Request $request){
 
@@ -263,7 +275,7 @@ class GiftController extends Controller{
     public function luckypersonal(Request $request){
          // Check token
          $con = new MyConstant();
-         
+
          if($con->tokenVail($request)){
              return response()->json([
                  'status' => 'ERROR',

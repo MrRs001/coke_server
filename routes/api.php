@@ -51,8 +51,10 @@ Route::group([
 
         // API Handle contract
         Route::post('createContractRetailer', 'API\ContractController@createContractRetailer');
+        Route::post('updateImageContract', 'API\ContractController@updateImage');
 
-        Route::post('retailer_info', 'API\RetailerController@retailer');
-        Route::post('retailer_upload', 'API\RetailerController@upload_image');
+        // API Handle gift
+        Route::get('getListGift', 'API\GiftController@getListGift');
+
     });
 });

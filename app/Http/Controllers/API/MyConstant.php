@@ -8,21 +8,23 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\API\UserController;
 class MyConstant{
-    public  $LOCAL_HOST_IP  = "http://192.168.1.34";
     public  $DOMAIN  = "http://192.168.1.34";
     public  $STORAGE_IMAGE_CONTRACT = '/images/contracts';
     public  $STORAGE_IMAGE_GIFT = '/images/gifts';
 
 
-    public function getHostDomain(Request $request){
+    public static function getHostDomain(Request $request){
+
+        $LOCAL_HOST_IP  = "http://192.168.1.34";
+        
         $host = $request->getHost();
         if($host == 'localhost'){
-            return $this->LOCAL_HOST_IP;
+            return $LOCAL_HOST_IP;
         }
         return 'http://'.$host;
     }
 
-    public function tokenVail(Request $request){
+    public static function tokenVail(Request $request){
             $user = new UserController();
             $expired = $user->get_expired_at($request);
             if(Carbon::parse($expired) < Carbon::now()){

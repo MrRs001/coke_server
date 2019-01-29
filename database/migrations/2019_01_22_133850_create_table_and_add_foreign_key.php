@@ -19,7 +19,6 @@ class CreateTableAndAddForeignKey extends Migration
                 $table->increments('id')->unique();
                 $table->string('user_id');
                 $table->string('password');
-                $table->string('token')->nullable();
                 $table->dateTime('expired_at')->nullable();
                 $table->timestamps();
             });
@@ -83,6 +82,8 @@ class CreateTableAndAddForeignKey extends Migration
                 $table->string('contract_id')->unique();
                 $table->string('distribute_code');
                 $table->string('sales');
+                $table->string('image')->nullable();
+                $table->string('hash_image')->nullable();
                 $table->string('gift_id')->nullable();
                 $table->string('gift_type')->nullable();
                 $table->string('u_name')->nullable();

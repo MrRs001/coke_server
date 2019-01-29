@@ -79,4 +79,61 @@ class ContractController extends Controller{
          ],200);
 
      }
+
+    /**
+     * function to upload image to contract
+     * @param [string] contract_id
+     * @param [file] image
+     */
+    public function updateImage(Request $request){
+        $this->validate($request, [
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
+
+        if($request->hasFile('image')){
+            $image = $request->file('image');
+
+            //Validate image uploaded
+            $file_hash_content = md5_file($image);
+
+            if($modify = Retailer::where('hash_image', '=', $file_hash_content)->first()){
+               return response()->json([
+                   'type' => 'RETAILER',
+                   'status' => 'ERROR',
+                   'message' => 'Image existed!'
+               ],400); 
+            }
+
+            // Set name : contract_id + type of image (png/jpeg.....)
+            $name = $request->contract_id.'.'.$image->getClientOriginalExtension();
+            
+            $constant = new MyConstant();
+
+            $full_path = $constant->DOMAIN.$constant->STORAGE_IMAGE_CONTRACT.'/'.$name;
+
+            $destinationPath = public_path($constant->STORAGE_IMAGE_CONTRACT);
+        
+            $image->move($destinationPath, $name);
+
+            //Update with conditions
+            Retailer::where('contract_id', $request->contract_id)->limit(1)->update([
+                'hash_image' => $file_hash_content,
+                'image' => $full_path
+            ]);
+
+            return response()->json([
+                'type' => 'CONTRACT',
+                'status' => 'SUCCESS',
+                'message' => 'Uploaded image!',
+                'image' => $full_path,
+                'hash' => $file_hash_content,
+            ],200);
+        }else{
+            return response()->json([
+                'type' => 'CONTRACT',
+                'status' => 'ERROR',
+                'message' => 'Error upload!'
+            ],400);
+        }
+    }
 }

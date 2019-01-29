@@ -104,7 +104,7 @@ class RetailerController extends Controller{
                 'type' => 'RETAILER',
                 'status' => 'ERROR',
                 'message' => 'Error upload!'
-            ],201);
+            ],401);
 
         }
     }

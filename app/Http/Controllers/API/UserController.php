@@ -79,10 +79,9 @@ class UserController extends Controller{
         $token->expires_at = Carbon::now()->addWeeks(1);
 
         $token->save();
-
+        // return $token;
         // update expires_at
         User::where('user_id',$request->user_id)->limit(1)->update([
-            'token' => $token,
             'expired_at' => Carbon::parse(
                 $tokenResult->token->expires_at
             )->toDateTimeString()
