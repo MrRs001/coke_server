@@ -263,12 +263,14 @@ class GiftController extends Controller{
     public function luckypersonal(Request $request){
          // Check token
          $con = new MyConstant();
+         
          if($con->tokenVail($request)){
              return response()->json([
                  'status' => 'ERROR',
                  'message' => 'Token expired !'
              ],400);
          }
+
         $array = array(
             [
                 [

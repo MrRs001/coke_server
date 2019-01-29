@@ -30,6 +30,8 @@ Route::group([
     'prefix' => 'auth'
 ], function () {
     Route::post('login', 'API\UserController@login');
+    Route::get('gethost', 'API\MyConstant@getHostDomain');
+    Route::post('login', 'API\UserController@login');
     Route::post('signup', 'API\UserController@signup');
     Route::post('insert_gift','API\GiftController@insertNewGift');
     Route::group([

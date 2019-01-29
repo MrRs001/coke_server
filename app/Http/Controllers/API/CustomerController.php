@@ -9,6 +9,23 @@ use App\Http\Controllers\Controller;
 
 class CustomerController extends Controller{
 
+    /**
+     * Insert data for customer in file excel
+     * 
+     * @param [string] file 
+     * 
+     */
+    public function insertData(Request $request){
+        // Check if has file 
+        if($request->hasFile('file')){
+            // Get file 
+            $file = $request->file('file');
+            // Get real path of this file
+            $pathFile = $file->getRealPath();
+            // Open and read file
+            $open = fopen($pathFile, 'r');
+        }
+    }
 
     /**
      * Insert new customer
