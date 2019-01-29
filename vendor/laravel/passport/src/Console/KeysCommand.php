@@ -15,7 +15,7 @@ class KeysCommand extends Command
      */
     protected $signature = 'passport:keys
                                       {--force : Overwrite keys they already exist}
-                                      {--length=4096 : The length of the private key}';
+                                      {--length=1024 : The length of the private key}';
 
     /**
      * The console command description.

@@ -19,6 +19,7 @@ class CreateTableAndAddForeignKey extends Migration
                 $table->increments('id')->unique();
                 $table->string('user_id');
                 $table->string('password');
+                $table->string('token')->nullable();
                 $table->dateTime('expired_at')->nullable();
                 $table->timestamps();
             });
@@ -76,15 +77,22 @@ class CreateTableAndAddForeignKey extends Migration
             });
         }
 
-        if(!Schema::hasTable('CustomerHaveGift')){
-            Schema::create('CustomerHaveGift', function (Blueprint $table) {
+        if(!Schema::hasTable('ContractInfo')){
+            Schema::create('ContractInfo', function (Blueprint $table) {
                 $table->increments('id')->unique();
-                $table->string('contract');
-                $table->string('gift');
+                $table->string('contract_id')->unique();
+                $table->string('distribute_code');
+                $table->string('sales');
+                $table->string('gift_id')->nullable();
+                $table->string('gift_type')->nullable();
+                $table->string('u_name')->nullable();
+                $table->string('u_phone')->nullable();
+                $table->string('u_address')->nullable();
                 $table->timestamps();
             });
         }
 
+       
     }
 
     /**

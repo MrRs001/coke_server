@@ -29,11 +29,15 @@ use Illuminate\Http\Request;
 Route::group([
     'prefix' => 'auth'
 ], function () {
-    Route::post('login', 'API\UserController@login');
+
     Route::get('gethost', 'API\MyConstant@getHostDomain');
+
+
     Route::post('login', 'API\UserController@login');
     Route::post('signup', 'API\UserController@signup');
+
     Route::post('insert_gift','API\GiftController@insertNewGift');
+
     Route::group([
       'middleware' => 'auth:api'
     ], function() {
@@ -44,6 +48,9 @@ Route::group([
 
         Route::post('admin_insert_customer', 'API\CustomerController@insertCustomer');
         Route::post('customer_update', 'API\CustomerController@updateInfo');
+
+        // API Handle contract
+        Route::post('createContractRetailer', 'API\ContractController@createContractRetailer');
 
         Route::post('retailer_info', 'API\RetailerController@retailer');
         Route::post('retailer_upload', 'API\RetailerController@upload_image');

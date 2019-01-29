@@ -30,4 +30,9 @@ class MyConstant{
             }
             return false;
     }
+
+    public static function checkTokenRight(Request $request){
+        $getToken = $request->bearerToken();
+        return $getToken;
+    }
 }
