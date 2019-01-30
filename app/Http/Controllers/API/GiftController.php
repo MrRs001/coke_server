@@ -21,6 +21,7 @@ class GiftController extends Controller{
         ]);
     }
 
+   
     public function insertNewGift(Request $request){
 
         $constant = new MyConstant();
@@ -92,7 +93,7 @@ class GiftController extends Controller{
     }
    
 
-    public function requestgift(Request $request){
+    public function requestGift(Request $request){
         // Check token
         $con = new MyConstant();
         if($con->tokenVail($request)){
@@ -272,7 +273,7 @@ class GiftController extends Controller{
         }
 
     }
-    public function luckypersonal(Request $request){
+    public function luckyPerson(Request $request){
          // Check token
          $con = new MyConstant();
 

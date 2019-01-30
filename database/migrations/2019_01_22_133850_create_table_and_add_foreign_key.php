@@ -23,18 +23,6 @@ class CreateTableAndAddForeignKey extends Migration
                 $table->timestamps();
             });
        }
-       
-        // if(!Schema::hasTable('Customer')){
-        //     Schema::create('Customer', function (Blueprint $table) {
-        //         $table->string('id')->unique();
-        //         $table->string('contract_id');
-        //         $table->string('sales');
-        //         $table->string('user_id');
-        //         $table->string('image')->nullable();
-        //         $table->string('hash_image')->nullable();
-        //         $table->timestamps();
-        //     });
-        // }
         
         if(!Schema::hasTable('Customer')){
             Schema::create('Customer', function (Blueprint $table) {

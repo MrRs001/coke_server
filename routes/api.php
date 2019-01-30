@@ -43,8 +43,8 @@ Route::group([
     ], function() {
         Route::get('logout', 'API\UserController@logout');
         Route::get('user', 'API\UserController@user');
-        Route::post('requestgift', 'API\GiftController@requestgift');
-        Route::get('getlist', 'API\GiftController@luckypersonal');
+        Route::post('requestgift', 'API\GiftController@requestGift');
+        Route::get('getLuckyPerson', 'API\GiftController@luckyPerson');
 
         Route::post('admin_insert_customer', 'API\CustomerController@insertCustomer');
         Route::post('customer_update', 'API\CustomerController@updateInfo');
@@ -53,6 +53,8 @@ Route::group([
         Route::post('createContractRetailer', 'API\ContractController@createContractRetailer');
         Route::post('updateImageContract', 'API\ContractController@updateImage');
 
+        // API Handle Report
+        Route::post('getReport', 'API\ReportController@getReport');
         // API Handle gift
         Route::get('getListGift', 'API\GiftController@getListGift');
 

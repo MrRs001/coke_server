@@ -19,7 +19,6 @@ class ContractController extends Controller{
         $constant = new MyConstant();
         return $constant->checkTokenRight();
     }
-    
 
     /**
      * 
@@ -128,12 +127,66 @@ class ContractController extends Controller{
                 'image' => $full_path,
                 'hash' => $file_hash_content,
             ],200);
+
         }else{
+
             return response()->json([
                 'type' => 'CONTRACT',
                 'status' => 'ERROR',
                 'message' => 'Error upload!'
             ],400);
+
         }
     }
+
+    /**
+     * Lucky contract - update info of customer 
+     * @param [string] constract_id
+     * @param [string] name
+     * @param [string] phone
+     * @param [string] address
+     * 
+     */
+    public function luckyCustomerUpdate(Request $request){
+        $contract_id = $request->contract_id;
+        $name = $request->name;
+        $phone = $request->phone;
+        $address = $request->address;
+
+        if($check = Contract::where('contract_id', '=',$contract_id )->first()){
+            return response()->json([
+                'type' => 'LUCKY',
+                'status' => 'ERROR',
+                'message' => 'Contract not exist!'
+            ], 400);
+        }
+
+        $data = [
+            'u_name' => $name,
+            'u_phone' => $phone,
+            'u_address' => $address
+        ];
+
+        // Update info 
+        Contract::where('contract_id',$contract_id)->limit(1)->update($data);
+
+        return response()->json([
+            'type' => 'LUCKY',
+            'status' => 'SUCCESS',
+            'message' => 'Updated lucky customer info!'
+        ]); 
+    }
+
+    /**
+     * 
+     * Upload image to verify when spin out gold necklace
+     * @param [file] image address
+     * @param [file] image identity 
+     * 
+     */
+    public function uploadImageToVerify(Request $request){
+        
+    }
+   
+    
 }
