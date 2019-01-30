@@ -29,7 +29,8 @@ class CreateTableAndAddForeignKey extends Migration
                 $table->increments('id')->unique();
                 $table->string('customer_code')->nullable();
                 $table->string('name')->nullable();
-                $table->string('distributor_code')->nullable();
+                $table->string('sales_office')->nullable();
+                $table->string('distribute_code')->nullable();
                 $table->string('city')->nullable();
                 $table->string('district')->nullable();
                 $table->string('street')->nullable();

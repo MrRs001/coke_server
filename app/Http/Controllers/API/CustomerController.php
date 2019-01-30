@@ -6,6 +6,10 @@ use App\Customer;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Maatwebsite\Excel\Facades\Excel;
+
+// Import 
+use App\Imports\CustomerImport;
 
 class CustomerController extends Controller{
 
@@ -16,6 +20,23 @@ class CustomerController extends Controller{
      * 
      */
     public function insertDataViaFile(Request $request){
+        if($check = $request->hasFile('file')){
+            $file = $request->file('file');
+            Excel::import(new CustomerImport, $file);
+            return response()->json([
+                'type' => 'IMPORT',
+                'status' => 'SUCCESS',
+                'message' => 'import success'
+            ],200);
+        }else{
+            return response()->json([
+                'type' => 'IMPORT',
+                'status' => 'ERROR',
+                'message' => 'import fail'
+            ],400);
+        }
+
+       
     }
 
     /**
@@ -92,8 +113,6 @@ class CustomerController extends Controller{
         ]);
 
         
-
-
     }
 
 }
