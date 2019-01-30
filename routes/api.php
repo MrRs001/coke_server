@@ -46,7 +46,7 @@ Route::group([
         Route::post('requestgift', 'API\GiftController@requestGift');
         Route::get('getLuckyPerson', 'API\GiftController@luckyPerson');
 
-        Route::post('admin_insert_customer', 'API\CustomerController@insertCustomer');
+        // API handle customer
         Route::post('customer_update', 'API\CustomerController@updateInfo');
 
         // API Handle contract
@@ -55,8 +55,14 @@ Route::group([
 
         // API Handle Report
         Route::post('getReport', 'API\ReportController@getReport');
+
         // API Handle gift
         Route::get('getListGift', 'API\GiftController@getListGift');
+
+        // API for ADMIN
+        Route::post('admin_insert_customer_one', 'API\CustomerController@insertCustomerManual');
+        Route::post('admin_insert_customer_file', 'API\CustomerController@insertDataViaFile');
+
 
     });
 });

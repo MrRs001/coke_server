@@ -15,16 +15,7 @@ class CustomerController extends Controller{
      * @param [string] file 
      * 
      */
-    public function insertData(Request $request){
-        // Check if has file 
-        if($request->hasFile('file')){
-            // Get file 
-            $file = $request->file('file');
-            // Get real path of this file
-            $pathFile = $file->getRealPath();
-            // Open and read file
-            $open = fopen($pathFile, 'r');
-        }
+    public function insertDataViaFile(Request $request){
     }
 
     /**
@@ -33,8 +24,16 @@ class CustomerController extends Controller{
      * @param [string] customer_code
      */
 
-     public function insertCustomer(Request $request){
+     public function insertCustomerManual(Request $request){
         $customer_code = $request->customer_code;
+
+        if($check = Customer::where('customer_code', '=',$customer_code)){
+            return response()->json([
+                'type' => 'ADMIN',
+                'status' => 'ERROR',
+                'message' => 'Customer existed',
+            ]);
+        }
 
         $customer = new Customer([
             'customer_code' => $customer_code
@@ -44,7 +43,8 @@ class CustomerController extends Controller{
 
         return response()->json([
             'type' => 'ADMIN',
-            'status' => 'Insert new customer',
+            'status' => 'SUCCESS',
+            'message' => 'Insert new customer',
             'customer code' => $customer_code
         ]);
      }
@@ -74,12 +74,6 @@ class CustomerController extends Controller{
                 'message' => 'Customer not exist!'
             ]);
         }
-
-        // $request->validate([
-        //     'name' => 'required|string',
-        //     'mobile' => 'required|string',
-        //     'city' => 'required|string'
-        // ]);
 
         $dataUpdate = [
             'name' => $name,

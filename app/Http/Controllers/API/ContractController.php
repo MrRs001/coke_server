@@ -83,6 +83,7 @@ class ContractController extends Controller{
      * function to upload image to contract
      * @param [string] contract_id
      * @param [file] image
+     * @param [string] type : step1, step2, step3
      */
     public function updateImage(Request $request){
         $this->validate($request, [
@@ -102,6 +103,12 @@ class ContractController extends Controller{
                    'message' => 'Image existed!'
                ],400); 
             }
+
+            // Get type of request
+            // step1 : upload image to verify contract
+            // step2 : upload image to verify lucky person stay front store
+            // step3 : upload image to verify lucky person's identity card
+            $type = $request->type;
 
             // Set name : contract_id + type of image (png/jpeg.....)
             $name = $request->contract_id.'.'.$image->getClientOriginalExtension();
@@ -177,16 +184,7 @@ class ContractController extends Controller{
         ]); 
     }
 
-    /**
-     * 
-     * Upload image to verify when spin out gold necklace
-     * @param [file] image address
-     * @param [file] image identity 
-     * 
-     */
-    public function uploadImageToVerify(Request $request){
-        
-    }
+   
    
     
 }

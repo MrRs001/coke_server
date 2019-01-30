@@ -21,7 +21,11 @@ class ReportController extends Controller{
         try{
             $type = $request->type;
             $data = [];
-            $data = Contract::where('gift_type' , '=', $type)->get();
+            if($type == 'ALL'){
+                $data = Contract::all();
+            }else{
+                $data = Contract::where('gift_type' , '=', $type)->get();
+            }
             return response()->json([
                 'type' => 'REPORT',
                 'status' => 'SUCCESS',

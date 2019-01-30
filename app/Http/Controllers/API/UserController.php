@@ -13,6 +13,7 @@ class UserController extends Controller{
      *
      * @param  [string] user_id
      * @param  [string] password
+     * @param [string] type : ADMIN, MANAGER, USER
      */
 
     public function signup(Request $request)
@@ -30,12 +31,14 @@ class UserController extends Controller{
 
         $request->validate([
             'user_id' => 'required|string',
-            'password' => 'required|string'
+            'password' => 'required|string',
+            'type' => 'required|string'
         ]);
 
         $user = new User([
             'user_id' => $request->user_id,
-            'password' => bcrypt($request->password)
+            'password' => bcrypt($request->password),
+            'type' => $request->type
         ]);
 
         $user->save();
@@ -43,7 +46,8 @@ class UserController extends Controller{
         return response()->json([
             'type' => 'SIGNUP',
             'status' => 'SUCCESS',
-            'message' => 'Successfully created user!'
+            'message' => 'Successfully created user!',
+            'account type' => $request->type
         ], 201);
     }
 
@@ -64,11 +68,11 @@ class UserController extends Controller{
         $credentials = request(['user_id', 'password']);
 
         if(!Auth::attempt($credentials))
-            return response()->json([
-                'type' => 'LOGIN',
-                'status' => 'ERROR',
-                'message' => 'Unauthorized'
-            ], 400);
+        return response()->json([
+            'type' => 'LOGIN',
+            'status' => 'ERROR',
+            'message' => 'Unauthorized'
+        ], 400);
 
         $user = $request->user();
 
@@ -91,6 +95,7 @@ class UserController extends Controller{
             'type' => 'LOGIN',
             'status' => 'SUCCESS',
             'access_token' => $tokenResult->accessToken,
+            'account_type' => $request->type,
             'token_type' => 'Bearer',
             'expired_at' => Carbon::parse(
                 $tokenResult->token->expires_at

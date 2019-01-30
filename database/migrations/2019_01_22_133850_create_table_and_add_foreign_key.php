@@ -13,12 +13,12 @@ class CreateTableAndAddForeignKey extends Migration
      */
     public function up()
     {
-
         if (!Schema::hasTable('User')) {
             Schema::create('User', function (Blueprint $table) {
                 $table->increments('id')->unique();
                 $table->string('user_id');
                 $table->string('password');
+                $table->string('type');
                 $table->dateTime('expired_at')->nullable();
                 $table->timestamps();
             });
@@ -77,6 +77,8 @@ class CreateTableAndAddForeignKey extends Migration
                 $table->string('u_name')->nullable();
                 $table->string('u_phone')->nullable();
                 $table->string('u_address')->nullable();
+                $table->string('u_img')->nullable();
+                $table->string('u_identity_card')->nullable();
                 $table->timestamps();
             });
         }
