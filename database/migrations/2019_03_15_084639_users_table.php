@@ -13,8 +13,32 @@ class UsersTable extends Migration
      */
     public function up()
     {
+        /**
+         * User fields
+         * id
+         * user name
+         * password
+         * access token to validate
+         */
         Schema::create('users', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('username', 50);
+            $table->string('password', 200);
+            $table->string('token', 200)->nullable();
+            $table->timestamps();
+        });
+
+        /**
+         * Data note
+         * Title
+         * Desc
+         * create_user
+         */
+        Schema::create('notes', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('title', 100);
+            $table->string('desc', 300);
+            $table->string('creator', 50)->nullable();
             $table->timestamps();
         });
     }
@@ -26,6 +50,5 @@ class UsersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
     }
 }

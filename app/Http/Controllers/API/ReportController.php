@@ -12,7 +12,7 @@ include "MyConstant.php";
 class ReportController extends Controller{
      /**
      * Function return personal have gift
-     * @param [string] type 
+     * @param [string] type
      */
 
     public function getReport(Request $request){
@@ -32,6 +32,7 @@ class ReportController extends Controller{
                 'message' => 'Type'.' '.$type,
                 'data' => $data
             ],200);
+
         }catch(\Exception $e){
             return response()->json([
                 'type' => 'REPORT',

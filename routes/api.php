@@ -34,7 +34,7 @@ Route::group([
 
 
     Route::post('login', 'API\UserController@login');
-    Route::post('signup', 'API\UserController@signup');
+    Route::post('register', 'API\UserController@register');
 
     Route::post('insert_gift','API\GiftController@insertNewGift');
 

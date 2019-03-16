@@ -16,24 +16,24 @@ class UserController extends Controller{
      * @param [string] type : ADMIN, MANAGER, USER
      */
 
-    public function signup(Request $request)
+    public function register(Request $request)
     {
 
         // Check user existed
-        if ($u = User::where('user_id', '=', $request->user_id)->first())
-        {
-            return response()->json([
-                'type' => 'SIGNUP',
-                'status' => 'ERROR',
-                'message' => 'User existed!'
-            ], 400);
-        } 
+        // if ($u = User::where('user_id', '=', $request->user_id)->first())
+        // {
+        //     return response()->json([
+        //         'type' => 'SIGNUP',
+        //         'status' => 'ERROR',
+        //         'message' => 'User existed!'
+        //     ], 400);
+        // }
 
-        $request->validate([
-            'user_id' => 'required|string',
-            'password' => 'required|string',
-            'type' => 'required|string'
-        ]);
+        // $request->validate([
+        //     'user_id' => 'required|string',
+        //     'password' => 'required|string',
+        //     'type' => 'required|string'
+        // ]);
 
         $user = new User([
             'user_id' => $request->user_id,
@@ -77,7 +77,7 @@ class UserController extends Controller{
         $user = $request->user();
 
         $tokenResult = $user->createToken('Personal Access Token');
-        
+
         $token = $tokenResult->token;
         // limit time life
         $token->expires_at = Carbon::now()->addWeeks(1);
@@ -102,7 +102,7 @@ class UserController extends Controller{
             )->toDateTimeString()
         ]);
     }
-  
+
      /**
      * Logout user (Revoke the token)
      *
@@ -115,7 +115,7 @@ class UserController extends Controller{
             'message' => 'Successfully logged out'
         ]);
     }
-  
+
 
     public function get_expired_at(Request $request){
         $expired_at = $request->user()->value('expired_at');
@@ -131,8 +131,8 @@ class UserController extends Controller{
     {
         return $request->user();
     }
- 
 
-     
+
+
 
 }
