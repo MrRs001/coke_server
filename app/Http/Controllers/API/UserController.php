@@ -8,47 +8,56 @@ use App\User;
 use App\Http\Controllers\Controller;
 
 class UserController extends Controller{
-    /**
-     * Create user
-     *
-     * @param  [string] user_id
-     * @param  [string] password
-     * @param [string] type : ADMIN, MANAGER, USER
-     */
 
+    /**
+     * Register new user with user and password decoded
+     *
+     * @param  [string] username
+     * @param  [string] password
+     */
     public function register(Request $request)
     {
 
-        // Check user existed
-        // if ($u = User::where('user_id', '=', $request->user_id)->first())
-        // {
-        //     return response()->json([
-        //         'type' => 'SIGNUP',
-        //         'status' => 'ERROR',
-        //         'message' => 'User existed!'
-        //     ], 400);
-        // }
+        //Check username existed or not
+        if ($u = User::where('username', '=', $request->username)->first())
+        {
+            return response()->json([
+                'type' => 'REGISTER',
+                'status' => 'ERROR',
+                'message' => 'User existed!'
+            ], 400);
+        }
 
-        // $request->validate([
-        //     'user_id' => 'required|string',
-        //     'password' => 'required|string',
-        //     'type' => 'required|string'
-        // ]);
-
-        $user = new User([
-            'user_id' => $request->user_id,
-            'password' => bcrypt($request->password),
-            'type' => $request->type
+        // Validate information
+        $request->validate([
+            'username' => 'required|string',
+            'password' => 'required|string',
         ]);
 
-        $user->save();
+        try{
+             // Cash to User object
+            $user = new User([
+                'username' => $request->username,
+                'password' => bcrypt($request->password),
+            ]);
 
+            // Save user to database
+            $user->save();
+        }catch(\Exception $e){
+            // Return error to user
+            return response()->json([
+                'type' => 'REGISTER',
+                'status' => 'ERROR',
+                'message' => $e->getMessage(),
+            ], 401);
+        }
+
+        // Return result to user
         return response()->json([
-            'type' => 'SIGNUP',
+            'type' => 'REGISTER',
             'status' => 'SUCCESS',
-            'message' => 'Successfully created user!',
-            'account type' => $request->type
-        ], 201);
+            'message' => 'Successfully register new user!',
+        ], 200);
     }
 
     /**
