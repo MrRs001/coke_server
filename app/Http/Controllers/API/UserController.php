@@ -1,13 +1,14 @@
 <?php
 namespace App\Http\Controllers\API;
 
+use App\Http\Controllers\Controller;
+use App\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Carbon\Carbon;
-use App\User;
-use App\Http\Controllers\Controller;
 
-class UserController extends Controller{
+class UserController extends Controller
+{
 
     /**
      * Register new user with user and password decoded
@@ -17,14 +18,12 @@ class UserController extends Controller{
      */
     public function register(Request $request)
     {
-
         //Check username existed or not
-        if ($u = User::where('username', '=', $request->username)->first())
-        {
+        if ($u = User::where('username', '=', $request->username)->first()) {
             return response()->json([
                 'type' => 'REGISTER',
                 'status' => 'ERROR',
-                'message' => 'User existed!'
+                'message' => 'User existed!',
             ], 400);
         }
 
@@ -34,22 +33,22 @@ class UserController extends Controller{
             'password' => 'required|string',
         ]);
 
-        try{
-             // Cash to User object
+        try {
+            // Cash to User object
             $user = new User([
                 'username' => $request->username,
                 'password' => bcrypt($request->password),
             ]);
-
             // Save user to database
             $user->save();
-        }catch(\Exception $e){
+
+        } catch (\Exception $e) {
             // Return error to user
             return response()->json([
                 'type' => 'REGISTER',
                 'status' => 'ERROR',
-                'message' => $e->getMessage(),
-            ], 401);
+                'message' => $e,
+            ], 400);
         }
 
         // Return result to user
@@ -63,56 +62,55 @@ class UserController extends Controller{
     /**
      * Login user and create token
      *
-     * @param  [string] user_id
+     * @param  [string] username
      * @param  [string] password
      */
     public function login(Request $request)
     {
+        try {
+            $request->validate([
+                'username' => 'required|string',
+                'password' => 'required|string',
+            ]);
 
-        $request->validate([
-            'user_id' => 'required|string',
-            'password' => 'required|string',
-        ]);
+        $credentials = request(['username', 'password']);
 
-        $credentials = request(['user_id', 'password']);
+        // Check user exited or not
+        if (!Auth::attempt($credentials)) {
+            return response()->json([
+                'type' => 'LOGIN',
+                'status' => 'ERROR',
+                'message' => 'Unauthorized',
+            ], 401);
+        }
+            $user = $request->user();
+            // Generate token for user
+            $tokenResult = $user->createToken('Personal Access Token');
+            // Get token from result
+            $token = $tokenResult->token;
+            // limit time life of token
+            $token->expires_at = Carbon::now()->addWeeks(1);
+            // Save token to handle
+            $token->save();
 
-        if(!Auth::attempt($credentials))
-        return response()->json([
-            'type' => 'LOGIN',
-            'status' => 'ERROR',
-            'message' => 'Unauthorized'
-        ], 400);
+            return response()->json([
+                'type' => 'LOGIN',
+                'status' => 'SUCCESS',
+                'access_token' => $tokenResult->accessToken,
+                'token_type' => 'Bearer',
+            ]);
 
-        $user = $request->user();
-
-        $tokenResult = $user->createToken('Personal Access Token');
-
-        $token = $tokenResult->token;
-        // limit time life
-        $token->expires_at = Carbon::now()->addWeeks(1);
-
-        $token->save();
-        // return $token;
-        // update expires_at
-        User::where('user_id',$request->user_id)->limit(1)->update([
-            'expired_at' => Carbon::parse(
-                $tokenResult->token->expires_at
-            )->toDateTimeString()
-        ]);
-
-        return response()->json([
-            'type' => 'LOGIN',
-            'status' => 'SUCCESS',
-            'access_token' => $tokenResult->accessToken,
-            'account_type' => $request->type,
-            'token_type' => 'Bearer',
-            'expired_at' => Carbon::parse(
-                $tokenResult->token->expires_at
-            )->toDateTimeString()
-        ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                    'type' => 'LOGIN',
+                    'status' => 'ERROR',
+                    'message' => $e->getMessage(),
+                ], 400
+            );
+        }
     }
 
-     /**
+    /**
      * Logout user (Revoke the token)
      *
      * @return [string] message
@@ -121,12 +119,12 @@ class UserController extends Controller{
     {
         $request->user()->token()->revoke();
         return response()->json([
-            'message' => 'Successfully logged out'
+            'message' => 'Successfully logged out',
         ]);
     }
 
-
-    public function get_expired_at(Request $request){
+    public function get_expired_at(Request $request)
+    {
         $expired_at = $request->user()->value('expired_at');
         return $expired_at;
     }
@@ -140,8 +138,5 @@ class UserController extends Controller{
     {
         return $request->user();
     }
-
-
-
 
 }

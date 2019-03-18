@@ -32,9 +32,15 @@ Route::group([
 
     Route::get('gethost', 'API\MyConstant@getHostDomain');
 
-
+    // User hanlder
     Route::post('login', 'API\UserController@login');
     Route::post('register', 'API\UserController@register');
+
+    // Note handler
+    Route::post('addNote', 'API\NoteController@createNewNote');
+    Route::get('getAllNote', 'API\NoteController@getAllNote');
+    Route::post('delete', 'API\NoteController@deleteNote');
+    Route::post('update', 'API\NoteController@updateNote');
 
     Route::post('insert_gift','API\GiftController@insertNewGift');
 
